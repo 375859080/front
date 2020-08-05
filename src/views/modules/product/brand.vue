@@ -111,7 +111,7 @@ export default {
   data() {
     return {
       dataForm: {
-        key: "",
+        key: ""
       },
       brandId: 0,
       catelogPath: [],
@@ -124,12 +124,12 @@ export default {
       dataListSelections: [],
       addOrUpdateVisible: false,
       cateRelationDialogVisible: false,
-      popCatelogSelectVisible: false,
+      popCatelogSelectVisible: false
     };
   },
   components: {
     AddOrUpdate,
-    CategoryCascader,
+    CategoryCascader
   },
   activated() {
     this.getDataList();
@@ -137,17 +137,11 @@ export default {
   methods: {
     addCatelogSelect() {
       //{"brandId":1,"catelogId":2}
-      this.popCatelogSelectVisible = false;
+      this.popCatelogSelectVisible =false;
       this.$http({
         url: this.$http.adornUrl("/product/categorybrandrelation/save"),
         method: "post",
-        data: this.$http.adornData(
-          {
-            brandId: this.brandId,
-            catelogId: this.catelogPath[this.catelogPath.length - 1],
-          },
-          false
-        ),
+        data: this.$http.adornData({brandId:this.brandId,catelogId:this.catelogPath[this.catelogPath.length-1]}, false)
       }).then(({ data }) => {
         this.getCateRelation();
       });
@@ -156,7 +150,7 @@ export default {
       this.$http({
         url: this.$http.adornUrl("/product/categorybrandrelation/delete"),
         method: "post",
-        data: this.$http.adornData([id], false),
+        data: this.$http.adornData([id], false)
       }).then(({ data }) => {
         this.getCateRelation();
       });
@@ -171,8 +165,8 @@ export default {
         url: this.$http.adornUrl("/product/categorybrandrelation/catelog/list"),
         method: "get",
         params: this.$http.adornParams({
-          brandId: this.brandId,
-        }),
+          brandId: this.brandId
+        })
       }).then(({ data }) => {
         this.cateRelationTableData = data.data;
       });
@@ -186,8 +180,8 @@ export default {
         params: this.$http.adornParams({
           page: this.pageIndex,
           limit: this.pageSize,
-          key: this.dataForm.key,
-        }),
+          key: this.dataForm.key
+        })
       }).then(({ data }) => {
         if (data && data.code === 0) {
           this.dataList = data.page.list;
@@ -206,11 +200,11 @@ export default {
       this.$http({
         url: this.$http.adornUrl("/product/brand/update/status"),
         method: "post",
-        data: this.$http.adornData({ brandId, showStatus }, false),
+        data: this.$http.adornData({ brandId, showStatus }, false)
       }).then(({ data }) => {
         this.$message({
           type: "success",
-          message: "状态更新成功",
+          message: "状态更新成功"
         });
       });
     },
@@ -240,7 +234,7 @@ export default {
     deleteHandle(id) {
       var ids = id
         ? [id]
-        : this.dataListSelections.map((item) => {
+        : this.dataListSelections.map(item => {
             return item.brandId;
           });
       this.$confirm(
@@ -249,13 +243,13 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning",
+          type: "warning"
         }
       ).then(() => {
         this.$http({
           url: this.$http.adornUrl("/product/brand/delete"),
           method: "post",
-          data: this.$http.adornData(ids, false),
+          data: this.$http.adornData(ids, false)
         }).then(({ data }) => {
           if (data && data.code === 0) {
             this.$message({
@@ -264,14 +258,14 @@ export default {
               duration: 1500,
               onClose: () => {
                 this.getDataList();
-              },
+              }
             });
           } else {
             this.$message.error(data.msg);
           }
         });
       });
-    },
-  },
+    }
+  }
 };
 </script>
